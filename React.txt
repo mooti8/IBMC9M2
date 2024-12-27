@@ -1,0 +1,51 @@
+
+
+import React, { useState } from 'react';
+import styles from './MovieRecommendationApp.module.css'; // Assuming you create this CSS module
+
+const movies = [
+  { title: 'The Shawshank Redemption', genre: 'Drama' },
+  { title: 'The Godfather', genre: 'Crime' },
+  { title: 'Pulp Fiction', genre: 'Crime' },
+  { title: 'The Dark Knight', genre: 'Action' },
+  { title: 'Fight Club', genre: 'Drama' },
+];
+
+const MovieRecommendationApp = () => {
+  const [genre, setGenre] = useState('');
+  const [recommendation, setRecommendation] = useState('');
+
+  const handleGenreChange = ({ target: { value } }) => {
+    setGenre(value);
+  };
+
+  const handleRecommendation = () => {
+    if (!genre) {
+      setRecommendation('Please select a genre');
+      return;
+    }
+
+    const moviesByGenre = movies.filter((movie) => movie.genre === genre);
+    const randomIndex = Math.floor(Math.random() * moviesByGenre.length);
+    const recommendedMovie = moviesByGenre[randomIndex];
+
+    setRecommendation(recommendedMovie ? recommendedMovie.title : 'No movies found for the selected genre');
+  };
+
+ return (
+    <div className={styles.container}>
+        <h1>Movie Recommendation App</h1>
+        <label htmlFor="genre">Select a genre:</label>
+        <select id="genre" value={genre} onChange={handleGenreChange}>
+            <option value="">-- Select --</option>
+            <option value="Drama">Drama</option>
+            <option value="Crime">Crime</option>
+            <option value="Action">Action</option>
+        </select>
+        <button className={styles.button} onClick={handleRecommendation}>Get Recommendation</button>
+        {recommendation && (<p>Recommended Movie: {recommendation}</p>)}
+    </div>
+);
+
+
+export default MovieRecommendationApp;
